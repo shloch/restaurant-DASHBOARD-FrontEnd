@@ -1,24 +1,117 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import SideBar from './components/SideBar'
+import Figures from './components/figures/Figures'
+import LowerDashboard from './components/LowerDashboard'
+import Header from './components/Header'
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+
+const options = {
+  chart: {
+    type: "areaspline",
+  },
+  title: {
+    text: "Average fruit consumption during one week",
+  },
+  legend: {
+    layout: "vertical",
+    align: "left",
+    verticalAlign: "top",
+    x: 150,
+    y: 100,
+    floating: true,
+    borderWidth: 1,
+    backgroundColor:
+      Highcharts.defaultOptions.legend.backgroundColor || "#FFFFFF",
+  },
+  xAxis: {
+    categories: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    plotBands: [
+      {
+        // visualize the weekend
+        from: 4.5,
+        to: 6.5,
+        color: "rgba(68, 170, 213, .2)",
+      },
+    ],
+  },
+  yAxis: {
+    title: {
+      text: "Fruit units",
+    },
+  },
+  tooltip: {
+    shared: true,
+    valueSuffix: " units",
+  },
+  credits: {
+    enabled: false,
+  },
+  plotOptions: {
+    areaspline: {
+      fillOpacity: 0.5,
+    },
+  },
+  series: [
+    {
+      name: "John",
+      data: [3, 4, 3, 5, 4, 10, 12],
+    },
+    {
+      name: "Jane",
+      data: [1, 3, 4, 3, 3, 5, 4],
+    },
+  ]
+};
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="container">
+        <SideBar />
+
+        {/* <!--Begining dashboard section --> */}
+        <div className="dashboard-container">
+          <Header />
+          <div className="dashboard">
+            <Figures />
+
+            {/* <!-- begining statistique area--> */}
+            <div className="dashboard-statistique">
+              <div className="network-activities">
+                <p>Network Activities Graph</p>
+              </div>
+              <div className="statistique">
+                <div className="long-graph">
+                  {/* <!--begining long graph area --> */}
+                  {/* <figure className="highcharts-figure">
+                    <div id="graphDiv">graph</div>
+                  </figure> */}
+                  <HighchartsReact highcharts={Highcharts} options={options} />
+                  {/* <!-- end long graph area--> */}
+                </div>
+                <div className="short-graph">
+                  <h2>Short Graph</h2>
+                </div>
+              </div>
+            </div>
+            <LowerDashboard />
+
+          </div>
+        </div>
+      </div>
+
+      <script src="longGraph.js"></script>
+    </>
   );
 }
 
