@@ -4,6 +4,7 @@ import TotalOrders from './TotalOrders'
 import TotalCategory from './TotalCategory'
 import TotalItems from './TotalItems'
 import HighestSpender from './HighestSpender'
+import TotalTransactions from './TotalTransactions'
 
 export class Figures extends Component {
   render() {
@@ -16,18 +17,7 @@ export class Figures extends Component {
           <TotalItems />
           <TotalOrders />
           <HighestSpender />
-
-          <span className="figure figure-six">
-            <div className="total-connection">
-              <i className="fas fa-user"></i>
-                Total Connection
-              </div>
-            <h2>2500</h2>
-            <div className="percent" style={{ color: "red" }}>
-              <i className="fas fa-sort-up"></i>
-                37% from last week
-              </div>
-          </span>
+          <TotalTransactions />
         </div>
         {/* <!--end dashboard figures section --> */}
       </>

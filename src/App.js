@@ -5,6 +5,8 @@ import LowerDashboard from './components/LowerDashboard'
 import Header from './components/Header'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import MostOrderedItems from './components/MostOrderedItems'
+import MainChart from './components/MainChart'
 
 const options = {
   chart: {
@@ -92,15 +94,11 @@ function App() {
               </div>
               <div className="statistique">
                 <div className="long-graph">
-                  {/* <!--begining long graph area --> */}
-                  {/* <figure className="highcharts-figure">
-                    <div id="graphDiv">graph</div>
-                  </figure> */}
-                  <HighchartsReact highcharts={Highcharts} options={options} />
-                  {/* <!-- end long graph area--> */}
+                  {/* <HighchartsReact highcharts={Highcharts} options={options} /> */}
+                  <MainChart />
                 </div>
                 <div className="short-graph">
-                  <h2>Short Graph</h2>
+                  <MostOrderedItems />
                 </div>
               </div>
             </div>

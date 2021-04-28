@@ -36,11 +36,6 @@ export class OrderBySex extends Component {
 
   render() {
 
-    // let allCityNames = []
-    // cityStats.map(cat => {
-    //   allCityNames.push(cat.percentage ? cat.percentage : '')
-    // })
-
     const { cityStats } = this.state
 
     const _bordeaux = (cityStats[0]) ? this.percentageCalculation(cityStats[0].percentage) : 0
@@ -55,7 +50,7 @@ export class OrderBySex extends Component {
         type: "column",
       },
       title: {
-        text: "Proportions des commandes par villes",
+        text: "Proportions des achats par villes",
       },
       subtitle: {
         text:
