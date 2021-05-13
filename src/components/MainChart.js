@@ -15,7 +15,7 @@ export class MainChart extends Component {
 
 
   componentDidMount() {
-    const path = '/items/most_ordered_items'
+    const path = '/items'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
@@ -30,16 +30,14 @@ export class MainChart extends Component {
       });
   }
 
-  getItemArrAndPercentageArr(originalArr) {
+  reformatArray(originalArr) {
     const isApiDataReady = !!originalArr[0]
     if (isApiDataReady) {
-      const itemNames = []
-      const itemPercentages = []
+      const items = []
       for (let item of originalArr) {
-        itemNames.push(item.itemName)
-        itemPercentages.push(item.numberOfOrders)
+        items.push([item.name, item.price])
       }
-      return { itemNames, itemPercentages }
+      return items
     } else {
       return 0
     }
@@ -49,43 +47,53 @@ export class MainChart extends Component {
 
     const { itemsArr } = this.state
 
-    const _itemsArr = this.getItemArrAndPercentageArr(itemsArr)
-    // const test = (_itemsArr.length) ? [..._itemsArr.item] : 0
-    console.log(_itemsArr.itemNames)
+    const _itemsArr = this.reformatArray(itemsArr)
+
 
 
     // ================data set options ===================
     const options = {
       chart: {
-        type: "bar",
+        plotBackgroundColor: null,
+        plotBorderWidth: 0,
+        plotShadow: false
       },
       title: {
-        text: "Les 05 produits les plus commandés",
+        text: 'Listes <br/> des <br/>produits <br/> + <br/> prix',
+        align: 'center',
+        verticalAlign: 'middle',
+        y: 60
       },
-      xAxis: {
-        categories: _itemsArr.itemNames,
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f} Euros</b>'
       },
-      yAxis: {
-        min: 0,
-        title: {
-          text: "Nombre de commandes",
-        },
-      },
-      legend: {
-        reversed: true,
+      accessibility: {
+        point: {
+          valueSuffix: ' Euros'
+        }
       },
       plotOptions: {
-        series: {
-          stacking: "normal",
-        },
+        pie: {
+          dataLabels: {
+            enabled: true,
+            distance: 15,
+            style: {
+              fontWeight: 'bold',
+              color: 'black'
+            }
+          },
+          startAngle: -90,
+          endAngle: 90,
+          center: ['50%', '75%'],
+          size: '110%'
+        }
       },
-      series: [
-        {
-          name: "",
-          data: _itemsArr.itemPercentages,
-        },
-
-      ],
+      series: [{
+        type: 'pie',
+        name: 'Prix',
+        innerSize: '60%',
+        data: _itemsArr
+      }]
     };
 
     // ===============================================
