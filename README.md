@@ -6,6 +6,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+## live demo
+[https://youthful-clarke-4eccc4.netlify.app](https://youthful-clarke-4eccc4.netlify.app)
+
 ### `yarn start`
 
 Runs the app in the development mode.\
