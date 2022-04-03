@@ -3,16 +3,17 @@ import SideBar from './components/SideBar'
 import Figures from './components/figures/Figures'
 import LowerDashboard from './components/LowerDashboard'
 import Header from './components/Header'
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
+//import Highcharts from 'highcharts';
+//import HighchartsReact from 'highcharts-react-official';
 import MostOrderedItems from './components/MostOrderedItems'
 import MainChart from './components/MainChart'
 
+/*
 const options = {
   chart: {
     type: "areaspline",
   },
-  title: {
+  title: {rails s
     text: "Average fruit consumption during one week",
   },
   legend: {
@@ -73,7 +74,7 @@ const options = {
     },
   ]
 };
-
+*/
 
 function App() {
   return (
@@ -90,7 +91,7 @@ function App() {
             {/* <!-- begining statistique area--> */}
             <div className="dashboard-statistique">
               <div className="network-activities">
-                <p>Network Activities Graph</p>
+                <p>VISUAL dashboard</p>
               </div>
               <div className="statistique">
                 <div className="long-graph">

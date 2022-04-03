@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Category from '../Category'
-import { v4 as uuidv4 } from 'uuid';
 import baseURL from '../../configBaseURL'
 
 
@@ -16,7 +14,6 @@ export class TotalCategory extends Component {
   }
 
   componentDidMount() {
-    // const fetchURL = `https://api.themoviedb.org/3/discover/movie?api_key=ee652a4c10bbae4e71f91b8eb0d004ba&language=en-US`
     const path = '/categories'
     const fetchURL = baseURL + path
     fetch(fetchURL)
@@ -34,7 +31,7 @@ export class TotalCategory extends Component {
 
   render() {
     let allCategories = ''
-    this.state.categories.map(cat => {
+    this.state.categories.forEach(cat => {
       allCategories += (cat.name ? cat.name + '/' : '')
     })
 

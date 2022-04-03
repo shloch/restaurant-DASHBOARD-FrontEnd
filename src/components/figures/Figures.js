@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import TotalUsers from './TotalUsers'
 import TotalOrders from './TotalOrders'
 import TotalCategory from './TotalCategory'
@@ -6,8 +6,7 @@ import TotalItems from './TotalItems'
 import HighestSpender from './HighestSpender'
 import TotalTransactions from './TotalTransactions'
 
-export class Figures extends Component {
-  render() {
+export function Figures() {
     return (
       <>
         {/* <!--Begining dashboard figures section --> */}
@@ -22,7 +21,6 @@ export class Figures extends Component {
         {/* <!--end dashboard figures section --> */}
       </>
     )
-  }
 }
 
 export default Figures

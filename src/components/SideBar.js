@@ -1,23 +1,60 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState, useContext} from 'react'
+import baseURL from '../configBaseURL'
+import {ShopContext} from '../shopContext';
 
-const options = {
-  chart: {
-    type: 'spline'
-  },
-  title: {
-    text: 'My chart'
-  },
-  series: [
-    {
-      data: [1, 2, 1, 4, 3, 6]
-    }
-  ]
-};
 
-export class sideBar extends Component {
-  render() {
-    return (
-      <>
+// const options = {
+//   chart: {
+//     type: 'spline'
+//   },
+//   title: {
+//     text: 'My chart'
+//   },
+//   series: [
+//     {
+//       data: [1, 2, 1, 4, 3, 6]
+//     }
+//   ]
+// };
+
+export function SideBar() {
+  const [shops, setShops] = useState()
+  const { shopID, changeShop } = useContext(ShopContext)
+  // const obj = useContext(ShopContext)
+  // console.log(JSON.stringify(obj))
+
+
+
+  useEffect(() => {
+    const path = '/shops'
+    const fetchURL = baseURL + path
+    fetch(fetchURL)
+      .then(Response => Response.json())
+      .then(apiData => {
+        setShops(apiData.results)
+      })
+      .catch(e => {
+        console.log(e);
+        return e;
+      });
+  }, []);
+
+  const showShops = (allShops) => {
+    return allShops && allShops.map(shop => 
+      (
+      <span key={ shop.id} onClick={() => changeShop(shop.id)}>
+            <a href="#">
+              <i className="fas fa-home"></i>
+              <p>{shop.name}</p>
+          </a>
+        </span>
+      )
+    )
+  }
+
+  return (
+    <>
+      {console.log(`my shop ==> ${shopID}`)}
         <div className="side-bar-container">
           <div className="top-menu">
             <h2>Dashbord Menu</h2>
@@ -34,13 +71,8 @@ export class sideBar extends Component {
           </div>
           <hr />
           <div className="bottom-menu">
-            <span>
-              <a href="#">
-                <i className="fas fa-home"></i>
-                <p>Home</p></a
-              >
-            </span>
-            <span>
+            {showShops(shops)}
+            {/* <span>
               <a href="#">
                 <i className="fab fa-wpforms"></i>
                 <p>Forms</p>
@@ -82,7 +114,7 @@ export class sideBar extends Component {
                 <i className="fas fa-laptop"></i>
                 <p>landing page</p>
               </a>
-            </span>
+            </span> */}
           </div>
           {/* <! --side bar footer --> */}
           <div className="side-bar-footer">
@@ -94,7 +126,6 @@ export class sideBar extends Component {
         </div>
       </>
     )
-  }
 }
 
-export default sideBar
+export default SideBar

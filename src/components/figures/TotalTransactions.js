@@ -12,7 +12,7 @@ export class TotalTransactions extends Component {
   }
 
   componentDidMount() {
-    const path = '/orderitems'
+    const path = '/shops/1/orderitems'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())

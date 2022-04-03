@@ -14,7 +14,7 @@ export class LowerDashboard extends Component {
         <div className="dashboard-graphs">
           <div className="upper-graph upper-graph1"> <OrderBySex /> </div>
           <div className="upper-graph upper-graph2"> <OrderByCity /> </div>
-          <div className="upper-graph upper-graph3">  <OrderByAgeGroup />  </div>
+          <div className="upper-graph upper-graph3">  <OrderByAgeGroup /></div>
 
           <div className="lower-graph lower-graph1">lower graph 1</div>
           <div className="lower-graph lower-graph2">lower graph 2</div>

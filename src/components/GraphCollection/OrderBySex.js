@@ -1,46 +1,39 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import baseURL from '../../configBaseURL'
 
+import {ShopContext} from '../../shopContext'
 
+export function OrderBySex(props) {
+  
 
-export class OrderBySex extends Component {
-  constructor(props) {
-    super(props)
+  const [female, setFemale] = useState({})
+  const [male, setMale] = useState({})
+  const { shopID } = useContext(ShopContext)
 
-    this.state = {
-      female: 0,
-      male: 0
-    }
-  }
-
-
-  componentDidMount() {
-    const path = '/orderitems/orders_by_sex'
+  useEffect(() => {
+    const path = `/shops/${shopID}/orderitems/orders_by_sex`
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
       .then(apiData => {
-        this.setState({
-          female: apiData.results[0],
-          male: apiData.results[1]
-        })
+        setFemale(apiData.results[0])
+        setMale(apiData.results[1])
       })
       .catch(e => {
         console.log(e);
         return e;
       });
+  }, [shopID])
+
+  const percentageCalculation = (str) => {
+    return str && +str.split('%')[0]
   }
 
-  percentageCalculation(str) {
-    return +str.split('%')[0]
-  }
-
-  render() {
-
-    const male = !!this.state.male.percentage ? this.percentageCalculation(this.state.male.percentage) : 0
-    const female = !!this.state.female.percentage ? this.percentageCalculation(this.state.female.percentage) : 0
+  const getOptions = () => {
+    const _male = male && percentageCalculation(male.percentage)
+    const _female = female && percentageCalculation(female.percentage)
 
     // ================data set options ===================
     const options = {
@@ -78,26 +71,29 @@ export class OrderBySex extends Component {
           data: [
             {
               name: "Hommes",
-              y: male,
+              y: _male,
               sliced: true,
               selected: true,
             },
             {
               name: "Femmes",
-              y: female,
+              y: _female,
             },
           ],
         },
       ],
     };
-
-    // ===============================================
-    return (
-      <>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </>
-    )
+    return options
   }
+
+  
+  return (
+    
+    <>
+      <HighchartsReact highcharts={Highcharts} options={getOptions()} />
+    </>
+  )
 }
 
 export default OrderBySex
+

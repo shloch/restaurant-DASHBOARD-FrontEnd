@@ -15,7 +15,7 @@ export class MainChart extends Component {
 
 
   componentDidMount() {
-    const path = '/items'
+    const path = '/shops/1/items'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
@@ -31,8 +31,8 @@ export class MainChart extends Component {
   }
 
   reformatArray(originalArr) {
-    const isApiDataReady = !!originalArr[0]
-    if (isApiDataReady) {
+    //const isApiDataReady = !!originalArr[0]
+    if (originalArr) {
       const items = []
       for (let item of originalArr) {
         items.push([item.name, item.price])
@@ -48,8 +48,6 @@ export class MainChart extends Component {
     const { itemsArr } = this.state
 
     const _itemsArr = this.reformatArray(itemsArr)
-
-
 
     // ================data set options ===================
     const options = {

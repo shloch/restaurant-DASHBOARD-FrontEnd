@@ -7,12 +7,12 @@ export class TotalItems extends Component {
     super(props)
 
     this.state = {
-      items: ''
+      items: 0
     }
   }
 
   componentDidMount() {
-    const path = '/items'
+    const path = '/shops/1/items'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
@@ -28,6 +28,9 @@ export class TotalItems extends Component {
   }
 
   render() {
+    //console.log(`items ----> ${JSON.stringify(Array.isArray(this.state.items))}`)
+    const { items } = this.state
+    
     return (
       <>
         <span className="figure figure-four">
@@ -35,7 +38,7 @@ export class TotalItems extends Component {
             <i className="fas fa-user"></i>
                 Total Produits
               </div>
-          <h2>{this.state.items.length}</h2>
+          <h2>{items ? items : 0}</h2>
         </span>
       </>
     )

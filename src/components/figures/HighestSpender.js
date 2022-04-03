@@ -13,7 +13,7 @@ export class HighestSpender extends Component {
   }
 
   componentDidMount() {
-    const path = '/orderitems/highest_spender'
+    const path = '/shops/1/orderitems/highest_spender'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())

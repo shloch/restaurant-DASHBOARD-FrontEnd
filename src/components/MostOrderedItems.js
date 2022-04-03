@@ -15,7 +15,7 @@ export class MostOrderedItems extends Component {
 
 
   componentDidMount() {
-    const path = '/items/most_ordered_items'
+    const path = '/shops/1/items/most_ordered_items'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
@@ -51,7 +51,7 @@ export class MostOrderedItems extends Component {
 
     const _itemsArr = this.getItemArrAndPercentageArr(itemsArr)
     // const test = (_itemsArr.length) ? [..._itemsArr.item] : 0
-    console.log(_itemsArr.itemNames)
+    //console.log(_itemsArr.itemNames)
 
 
     // ================data set options ===================

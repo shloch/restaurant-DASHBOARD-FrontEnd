@@ -16,7 +16,7 @@ export class OrderByAgeGroup extends Component {
   }
 
   componentDidMount() {
-    const path = '/orderitems/spending_amounts_by_age_group'
+    const path = '/shops/1/orderitems/spending_amounts_by_age_group'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())

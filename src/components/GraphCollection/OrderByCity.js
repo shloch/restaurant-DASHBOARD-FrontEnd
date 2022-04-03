@@ -15,7 +15,7 @@ export class OrderBySex extends Component {
 
 
   componentDidMount() {
-    const path = '/orderitems/orders_by_city'
+    const path = '/shops/1/orderitems/orders_by_city'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
