@@ -1,43 +1,37 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import baseURL from '../../configBaseURL'
 
+import {ShopContext} from '../../shopContext'
 
-export class OrderByAgeGroup extends Component {
-  constructor(props) {
-    super(props)
+export function OrderByAgeGroup() {
+  const [adolescence, setAdolescenceAmount] = useState(0)
+  const [adults, setAdultsAmount] = useState(0)
+  const [youths, setYouthsAmount] = useState(0)
+  const { shopID } = useContext(ShopContext)
 
-    this.state = {
-      Adolescence: 0,
-      Adults: 0,
-      Youths: 0
-    }
-  }
-
-  componentDidMount() {
-    const path = '/shops/1/orderitems/spending_amounts_by_age_group'
+  useEffect(() => {
+    const path = `/shops/${shopID}/orderitems/spending_amounts_by_age_group`
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
       .then(apiData => {
-        this.setState({
-          Adolescence: apiData.results[0],
-          Adults: apiData.results[1],
-          Youths: apiData.results[2]
-        })
+        setAdolescenceAmount(apiData.results[0]);
+        setAdultsAmount(apiData.results[1])
+        setYouthsAmount(apiData.results[2])
       })
       .catch(e => {
         console.log(e);
         return e;
       });
-  }
+  }, [shopID])
 
-  percentageCalculation(str) {
+  const percentageCalculation = (str) => {
     return +str.split('%')[0]
   }
 
-  ageGroupText(ageGroupString) {
+  const ageGroupText = (ageGroupString) => {
     let age_group = ''
     if (ageGroupString === 'Adolescence') {
       age_group = 'Adolescentes (0-26 ans)'
@@ -49,13 +43,13 @@ export class OrderByAgeGroup extends Component {
     return age_group
   }
 
-  constructObject(obj) {
+  const constructObject = (obj) => {
     if (obj.percentage) {
       let obj2 = {
-        percentage: this.percentageCalculation(obj.percentage),
+        percentage: percentageCalculation(obj.percentage),
         amount: obj.amount,
         total_orders: obj.total_orders,
-        age_group: this.ageGroupText(obj.age_group)
+        age_group: ageGroupText(obj.age_group)
       }
       return obj2
     } else {
@@ -63,13 +57,10 @@ export class OrderByAgeGroup extends Component {
     }
   }
 
-  render() {
-
-    const { Adolescence, Adults, Youths } = this.state
-
-    const _Adolescence = this.constructObject(Adolescence)
-    const _Adults = this.constructObject(Adults)
-    const _Youths = this.constructObject(Youths)
+  const getOptions = () => {
+    const _Adolescence = constructObject(adolescence)
+    const _Adults = constructObject(adults)
+    const _Youths = constructObject(youths)
 
     // ================data set options ===================
     const options = {
@@ -124,14 +115,12 @@ export class OrderByAgeGroup extends Component {
           }]
       }],
     };
-
-    // ===============================================
-    return (
-      <>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </>
-    )
+    return options
   }
+
+    return (
+        <HighchartsReact highcharts={Highcharts} options={getOptions()} />
+    )
 }
 
 export default OrderByAgeGroup

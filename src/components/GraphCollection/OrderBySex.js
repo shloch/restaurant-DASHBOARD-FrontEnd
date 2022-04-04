@@ -5,9 +5,7 @@ import baseURL from '../../configBaseURL'
 
 import {ShopContext} from '../../shopContext'
 
-export function OrderBySex(props) {
-  
-
+export function OrderBySex() {
   const [female, setFemale] = useState({})
   const [male, setMale] = useState({})
   const { shopID } = useContext(ShopContext)

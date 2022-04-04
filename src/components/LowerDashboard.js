@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 import OrderBySex from './GraphCollection/OrderBySex'
 import OrderByCity from './GraphCollection/OrderByCity'
 import OrderByAgeGroup from './GraphCollection/OrderByAgeGroup'

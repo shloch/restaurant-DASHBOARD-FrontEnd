@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import PropTypes from 'prop-types';
+
 const ShopContext = React.createContext()
 /*
 1 - France
@@ -18,5 +20,9 @@ function ShopContextProvider(props) {
         </ShopContext.Provider>
     )
 }
+
+ShopContextProvider.propTypes = {
+    children: PropTypes.node,
+  }
 
 export {ShopContextProvider, ShopContext}

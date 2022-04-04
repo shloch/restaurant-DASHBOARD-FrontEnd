@@ -1,3 +1,5 @@
+import React from 'react'
+
 import './App.scss';
 import SideBar from './components/SideBar'
 import Figures from './components/figures/Figures'

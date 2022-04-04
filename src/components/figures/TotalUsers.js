@@ -11,7 +11,7 @@ export class TotalUsers extends Component {
   }
 
   componentDidMount() {
-    const path = 'clients/total_clients'
+    const path = '/clients/total_clients'
     const fetchURL = baseURL + path
     fetch(fetchURL)
       .then(Response => Response.json())
@@ -25,7 +25,6 @@ export class TotalUsers extends Component {
         return e;
       });
   }
-
 
   render() {
     return (
