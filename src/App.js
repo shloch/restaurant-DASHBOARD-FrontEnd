@@ -1,14 +1,12 @@
-import React from 'react'
+import React from "react";
 
-import './App.scss';
-import SideBar from './components/SideBar'
-import Figures from './components/figures/Figures'
-import LowerDashboard from './components/LowerDashboard'
-import Header from './components/Header'
-//import Highcharts from 'highcharts';
-//import HighchartsReact from 'highcharts-react-official';
-import MostOrderedItems from './components/MostOrderedItems'
-import MainChart from './components/MainChart'
+import "./App.scss";
+import SideBar from "./components/SideBar";
+import Figures from "./components/figures/Figures";
+import LowerDashboard from "./components/LowerDashboard";
+import Header from "./components/Header";
+import MostOrderedItems from "./components/MostOrderedItems";
+import MainChart from "./components/MainChart";
 
 /*
 const options = {
@@ -106,7 +104,6 @@ function App() {
               </div>
             </div>
             <LowerDashboard />
-
           </div>
         </div>
       </div>

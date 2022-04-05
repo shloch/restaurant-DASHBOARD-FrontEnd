@@ -1,58 +1,46 @@
-import React, { Component } from 'react'
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import baseURL from '../configBaseURL'
+import React, { useState, useEffect, useContext } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import baseURL from "../configBaseURL";
 
+import { ShopContext } from "../shopContext";
 
-export class MostOrderedItems extends Component {
-  constructor(props) {
-    super(props)
+export function MostOrderedItems() {
+  const [itemsArr, setItemsArr] = useState(0);
+  const { shopID } = useContext(ShopContext);
 
-    this.state = {
-      itemsArr: 0
-    }
-  }
-
-
-  componentDidMount() {
-    const path = '/shops/1/items/most_ordered_items'
-    const fetchURL = baseURL + path
+  useEffect(() => {
+    const path = `/shops/${shopID}/items/most_ordered_items`;
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        this.setState({
-          itemsArr: apiData.results
-        })
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        setItemsArr(apiData.results);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
-  }
+  }, [shopID]);
 
-  getItemArrAndPercentageArr(originalArr) {
-    const isApiDataReady = !!originalArr[0]
+  const getItemArrAndPercentageArr = (originalArr) => {
+    const isApiDataReady = !!originalArr[0];
     if (isApiDataReady) {
-      const itemNames = []
-      const itemPercentages = []
+      const itemNames = [];
+      const itemPercentages = [];
       for (let item of originalArr) {
-        itemNames.push(item.itemName)
-        itemPercentages.push(item.numberOfOrders)
+        itemNames.push(item.itemName);
+        itemPercentages.push(item.numberOfOrders);
       }
-      return { itemNames, itemPercentages }
+      return { itemNames, itemPercentages };
     } else {
-      return 0
+      return 0;
     }
-  }
+  };
 
-  render() {
-
-    const { itemsArr } = this.state
-
-    const _itemsArr = this.getItemArrAndPercentageArr(itemsArr)
-    // const test = (_itemsArr.length) ? [..._itemsArr.item] : 0
-    //console.log(_itemsArr.itemNames)
-
+  const getOptions = () => {
+    const _itemsArr = getItemArrAndPercentageArr(itemsArr);
+    console.log({ _itemsArr });
 
     // ================data set options ===================
     const options = {
@@ -84,17 +72,13 @@ export class MostOrderedItems extends Component {
           name: "",
           data: _itemsArr.itemPercentages,
         },
-
       ],
     };
 
-    // ===============================================
-    return (
-      <>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </>
-    )
-  }
+    return options;
+  };
+
+  return <HighchartsReact highcharts={Highcharts} options={getOptions()} />;
 }
 
-export default MostOrderedItems
+export default MostOrderedItems;
