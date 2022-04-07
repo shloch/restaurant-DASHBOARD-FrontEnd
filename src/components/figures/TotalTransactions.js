@@ -1,49 +1,46 @@
-import React, { Component } from 'react'
-import baseURL from '../../configBaseURL'
+import React, { useState, useEffect, useContext } from "react";
+import baseURL from "../../configBaseURL";
+import { ShopContext } from "../../shopContext";
 
-export class TotalTransactions extends Component {
+export function TotalTransactions() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [count, setCount] = useState();
 
-  constructor(props) {
-    super(props)
+  const { shopID, shopName } = useContext(ShopContext);
 
-    this.state = {
-      count: ''
-    }
-  }
-
-  componentDidMount() {
-    const path = '/shops/1/orderitems'
-    const fetchURL = baseURL + path
+  useEffect(() => {
+    const path = `/shops/${shopID}/orderitems`;
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        this.setState({
-          count: apiData.results
-        })
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        setIsLoading(false);
+        setCount(apiData && apiData.results);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
-  }
+  }, [shopID]);
 
-  render() {
-    return (
-      <>
+  return (
+    <>
+      {isLoading && "Loading.."}
+      {count && (
         <span className="figure figure-six">
           <div className="total-connection">
             <i className="fas fa-user"></i>
-                Total Transactions
-              </div>
-          <h2>{this.state.count}</h2>
+            Total Transactions {shopName}
+          </div>
+          <h2>{count}</h2>
           <div className="percent" style={{ color: "green" }}>
             <i className="fas fa-sort-up"></i>
-                (pour tous les clients et toutes les commandes)
-              </div>
+            (pour tous les clients et toutes les commandes)
+          </div>
         </span>
-      </>
-    )
-  }
+      )}
+    </>
+  );
 }
 
-export default TotalTransactions
+export default TotalTransactions;

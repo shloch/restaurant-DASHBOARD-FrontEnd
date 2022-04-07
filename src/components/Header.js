@@ -1,18 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { ShopContext } from "../shopContext";
 
 export function Header() {
-  const { shopID } = useContext(ShopContext);
-  const [shop, setShop] = useState("FRANCE");
-
-  useEffect(() => {
-    shopID == 2 ? setShop("SPAIN") : setShop("FRANCE");
-  }, [shopID]);
+  const { shopName } = useContext(ShopContext);
 
   return (
     <div className="tittle">
       <h2>
-        DASHBOARD Statistiques <span className="shop-name"> {shop} </span>
+        DASHBOARD Statistiques <span className="shop-name"> {shopName} </span>
       </h2>
     </div>
   );

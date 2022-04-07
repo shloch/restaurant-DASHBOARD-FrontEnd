@@ -1,77 +1,60 @@
-import React, { Component } from 'react'
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import baseURL from '../../configBaseURL'
+import React, { useState, useEffect, useContext } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import baseURL from "../../configBaseURL";
+import { ShopContext } from "../../shopContext";
 
+export function OrderBySex() {
+  const [cityStats, setCityStats] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const { shopID, shopName } = useContext(ShopContext);
 
-export class OrderBySex extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      cityStats: 0
-    }
-  }
-
-
-  componentDidMount() {
-    const path = '/shops/1/orderitems/orders_by_city'
-    const fetchURL = baseURL + path
+  useEffect(() => {
+    const path = `/shops/${shopID}/orderitems/orders_by_city`;
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        this.setState({
-          cityStats: apiData.results
-        })
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        setCityStats(apiData.results);
+        setIsLoading(false);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
-  }
+  }, [shopID]);
 
-  percentageCalculation(str) {
-    return +str.split('%')[0]
-  }
+  const percentageCalculation = (str) => {
+    return +str.split("%")[0];
+  };
 
-  render() {
-
-    const { cityStats } = this.state
-
-    const _bordeaux = (cityStats[0]) ? this.percentageCalculation(cityStats[0].percentage) : 0
-    const _lyon = (cityStats[1]) ? this.percentageCalculation(cityStats[1].percentage) : 0
-    const _marseille = (cityStats[2]) ? this.percentageCalculation(cityStats[2].percentage) : 0
-    const _nice = (cityStats[3]) ? this.percentageCalculation(cityStats[3].percentage) : 0
-    const _paris = (cityStats[4]) ? this.percentageCalculation(cityStats[4].percentage) : 0
+  const getOptions = () => {
+    const highchargsDisplayConfig = [];
+    cityStats.map((cityStat) => {
+      highchargsDisplayConfig.push({
+        name: cityStat.city,
+        y: percentageCalculation(cityStat.percentage),
+        drilldown: cityStat.city,
+      });
+    });
 
     // ================data set options ===================
     const options = {
-      chart: {
-        type: "column",
-      },
+      chart: { type: "column" },
       title: {
-        text: "Proportions des achats par villes",
+        text: `Proportions des achats par villes en ${shopName}`,
       },
       subtitle: {
-        text:
-          'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>',
+        text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>',
       },
       accessibility: {
-        announceNewData: {
-          enabled: true,
-        },
+        announceNewData: { enabled: true },
       },
-      xAxis: {
-        type: "category",
-      },
+      xAxis: { type: "category" },
       yAxis: {
-        title: {
-          text: "Chiffres en %",
-        },
+        title: { text: "Chiffres en %" },
       },
-      legend: {
-        enabled: false,
-      },
+      legend: { enabled: false },
       plotOptions: {
         series: {
           borderWidth: 0,
@@ -81,55 +64,31 @@ export class OrderBySex extends Component {
           },
         },
       },
-
       tooltip: {
         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
         pointFormat:
           '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>',
       },
-
       series: [
         {
           name: "Browsers",
           colorByPoint: true,
-          data: [
-            {
-              name: "Bordeaux",
-              y: _bordeaux,
-              drilldown: "Bordeaux",
-            },
-            {
-              name: "Lyon",
-              y: _lyon,
-              drilldown: "Lyon",
-            },
-            {
-              name: "Marseille",
-              y: _marseille,
-              drilldown: "Marseille",
-            },
-            {
-              name: "Nice",
-              y: _nice,
-              drilldown: "Nice",
-            },
-            {
-              name: "Paris",
-              y: _paris,
-              drilldown: "Paris",
-            },
-          ],
+          data: highchargsDisplayConfig,
         },
       ],
     };
 
-    // ===============================================
-    return (
-      <>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </>
-    )
-  }
+    return options;
+  };
+
+  return (
+    <div>
+      {isLoading && <div> Loading... </div>}
+      {cityStats && (
+        <HighchartsReact highcharts={Highcharts} options={getOptions()} />
+      )}
+    </div>
+  );
 }
 
-export default OrderBySex
+export default OrderBySex;

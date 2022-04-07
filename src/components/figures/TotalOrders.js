@@ -1,49 +1,45 @@
-import React, { Component } from 'react'
-import baseURL from '../../configBaseURL'
+import React, { useEffect, useState, useContext } from "react";
+import baseURL from "../../configBaseURL";
+import { ShopContext } from "../../shopContext";
 
-export class TotalOrders extends Component {
+export function TotalOrders() {
+  const [count, setCount] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const { shopID } = useContext(ShopContext);
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      count: ''
-    }
-  }
-
-  componentDidMount() {
-    const path = '/shops/1/orders/total_orders'
-    const fetchURL = baseURL + path
+  useEffect(() => {
+    const path = `/shops/${shopID}/orders/total_orders`;
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        this.setState({
-          count: apiData.results
-        })
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        setCount(apiData.results);
+        setIsLoading(false);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
-  }
+  }, [shopID]);
 
-  render() {
-    return (
-      <>
+  return (
+    <>
+      {isLoading && "Loading..."}
+      {count && (
         <span className="figure figure-four">
           <div className="total-females">
             <i className="fas fa-user"></i>
-                Total Commandes
-              </div>
-          <h2>{this.state.count}</h2>
+            Total Commandes
+          </div>
+          <h2>{count}</h2>
           <div className="percent">
             <i className="fas fa-sort-down"></i>
-                par toutes les clients
+            par toutes les clients
           </div>
         </span>
-      </>
-    )
-  }
+      )}
+    </>
+  );
 }
 
-export default TotalOrders
+export default TotalOrders;

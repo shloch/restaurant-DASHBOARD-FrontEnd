@@ -1,13 +1,12 @@
-import React, { Component } from 'react'
+import React from "react";
+import PropTypes from "prop-types";
 
-export class Category extends Component {
-  render() {
-    return (
-      <>
-        {this.props.category.name}
-      </>
-    )
-  }
+export function Category(props) {
+  return props.category.name;
 }
 
-export default Category
+Category.propTypes = {
+  category: PropTypes.number.isRequired,
+};
+
+export default Category;

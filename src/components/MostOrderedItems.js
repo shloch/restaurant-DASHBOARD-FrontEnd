@@ -40,7 +40,6 @@ export function MostOrderedItems() {
 
   const getOptions = () => {
     const _itemsArr = getItemArrAndPercentageArr(itemsArr);
-    console.log({ _itemsArr });
 
     // ================data set options ===================
     const options = {

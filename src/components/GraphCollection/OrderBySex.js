@@ -1,37 +1,40 @@
-import React, { useState, useEffect, useContext } from 'react'
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import baseURL from '../../configBaseURL'
+import React, { useState, useEffect, useContext } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import baseURL from "../../configBaseURL";
 
-import {ShopContext} from '../../shopContext'
+import { ShopContext } from "../../shopContext";
 
 export function OrderBySex() {
-  const [female, setFemale] = useState({})
-  const [male, setMale] = useState({})
-  const { shopID } = useContext(ShopContext)
+  const [female, setFemale] = useState();
+  const [male, setMale] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { shopID } = useContext(ShopContext);
 
   useEffect(() => {
-    const path = `/shops/${shopID}/orderitems/orders_by_sex`
-    const fetchURL = baseURL + path
+    const path = `/shops/${shopID}/orderitems/orders_by_sex`;
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        setFemale(apiData.results[0])
-        setMale(apiData.results[1])
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        setFemale(apiData && apiData.results[0]);
+        setMale(apiData && apiData.results[1]);
+        setIsLoading(false);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
-  }, [shopID])
+  }, [shopID]);
 
   const percentageCalculation = (str) => {
-    return str && +str.split('%')[0]
-  }
+    return str && +str.split("%")[0];
+  };
 
   const getOptions = () => {
-    const _male = male && percentageCalculation(male.percentage)
-    const _female = female && percentageCalculation(female.percentage)
+    const _male = male && percentageCalculation(male.percentage);
+    const _female = female && percentageCalculation(female.percentage);
 
     // ================data set options ===================
     const options = {
@@ -81,17 +84,17 @@ export function OrderBySex() {
         },
       ],
     };
-    return options
-  }
+    return options;
+  };
 
-  
   return (
-    
-    <>
-      <HighchartsReact highcharts={Highcharts} options={getOptions()} />
-    </>
-  )
+    <div>
+      {isLoading && <div> Loading... </div>}
+      {male && female && (
+        <HighchartsReact highcharts={Highcharts} options={getOptions()} />
+      )}
+    </div>
+  );
 }
 
-export default OrderBySex
-
+export default OrderBySex;

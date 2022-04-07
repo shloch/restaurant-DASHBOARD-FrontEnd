@@ -1,74 +1,65 @@
-import React, { Component } from 'react'
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import baseURL from '../configBaseURL'
+import React, { useState, useEffect, useContext } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import baseURL from "../configBaseURL";
+import { ShopContext } from "../shopContext";
 
+export function MainChart() {
+  const [isLoading, setIsLoading] = useState(true);
+  const { shopID, shopName } = useContext(ShopContext);
+  const [itemsArr, setItemsArr] = useState();
 
-export class MainChart extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      itemsArr: 0
-    }
-  }
-
-
-  componentDidMount() {
-    const path = '/shops/1/items'
-    const fetchURL = baseURL + path
+  useEffect(() => {
+    const path = `/shops/${shopID}/items`;
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        this.setState({
-          itemsArr: apiData.results
-        })
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        setItemsArr(apiData);
+        setIsLoading(false);
+        console.log({ apiData });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
-  }
+  }, [shopID]);
 
-  reformatArray(originalArr) {
-    //const isApiDataReady = !!originalArr[0]
+  function reformatArray(originalArr) {
     if (originalArr) {
-      const items = []
+      const items = [];
       for (let item of originalArr) {
-        items.push([item.name, item.price])
+        items.push([item.name, item.price]);
       }
-      return items
-    } else {
-      return 0
+      return items;
     }
+    setIsLoading(true);
+    return;
   }
 
-  render() {
-
-    const { itemsArr } = this.state
-
-    const _itemsArr = this.reformatArray(itemsArr)
+  const getOptions = () => {
+    const _itemsArr = reformatArray(itemsArr);
 
     // ================data set options ===================
     const options = {
       chart: {
         plotBackgroundColor: null,
         plotBorderWidth: 0,
-        plotShadow: false
+        plotShadow: false,
       },
       title: {
-        text: 'Listes <br/> des <br/>produits <br/> + <br/> prix',
-        align: 'center',
-        verticalAlign: 'middle',
-        y: 60
+        text: "Listes <br/> des <br/>produits <br/> + <br/> prix",
+        align: "center",
+        verticalAlign: "middle",
+        y: 60,
       },
       tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f} Euros</b>'
+        pointFormat: "{series.name}: <b>{point.percentage:.1f} Euros</b>",
       },
       accessibility: {
         point: {
-          valueSuffix: ' Euros'
-        }
+          valueSuffix: " Euros",
+        },
       },
       plotOptions: {
         pie: {
@@ -76,31 +67,39 @@ export class MainChart extends Component {
             enabled: true,
             distance: 15,
             style: {
-              fontWeight: 'bold',
-              color: 'black'
-            }
+              fontWeight: "bold",
+              color: "black",
+            },
           },
           startAngle: -90,
           endAngle: 90,
-          center: ['50%', '75%'],
-          size: '110%'
-        }
+          center: ["50%", "75%"],
+          size: "110%",
+        },
       },
-      series: [{
-        type: 'pie',
-        name: 'Prix',
-        innerSize: '60%',
-        data: _itemsArr
-      }]
+      series: [
+        {
+          type: "pie",
+          name: "Prix",
+          innerSize: "60%",
+          data: _itemsArr,
+        },
+      ],
     };
 
-    // ===============================================
-    return (
-      <>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </>
-    )
-  }
+    return options;
+  };
+
+  // ===============================================
+  return (
+    <>
+      {isLoading && "isLoading.."}
+      <h1> {shopName}</h1>
+      {itemsArr && (
+        <HighchartsReact highcharts={Highcharts} options={getOptions()} />
+      )}
+    </>
+  );
 }
 
-export default MainChart
+export default MainChart;

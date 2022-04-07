@@ -1,28 +1,28 @@
-import React, { useState } from "react"
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-const ShopContext = React.createContext()
-/*
-1 - France
-2 - Spain
-*/
+const ShopContext = React.createContext();
+//const FRANCEID = 1;
+const SPAINID = 2;
 
 function ShopContextProvider(props) {
-    const [shopID, setShopID] = useState('1')
-    
-    function changeShop(newShopID) {
-        setShopID(newShopID)
-    }
-    
-    return (
-        <ShopContext.Provider value={{shopID, changeShop}}>
-            {props.children}
-        </ShopContext.Provider>
-    )
+  const [shopID, setShopID] = useState("1");
+  const [shopName, setShopName] = useState("FRANCE");
+
+  function changeShop(newShopID) {
+    setShopID(newShopID);
+    newShopID == SPAINID ? setShopName("SPAIN") : setShopName("FRANCE");
+  }
+
+  return (
+    <ShopContext.Provider value={{ shopID, changeShop, shopName }}>
+      {props.children}
+    </ShopContext.Provider>
+  );
 }
 
 ShopContextProvider.propTypes = {
-    children: PropTypes.node,
-  }
+  children: PropTypes.node,
+};
 
-export {ShopContextProvider, ShopContext}
+export { ShopContextProvider, ShopContext };
