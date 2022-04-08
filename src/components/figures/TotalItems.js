@@ -1,48 +1,43 @@
-import React, { Component } from 'react'
-import baseURL from '../../configBaseURL'
+import React, { useState, useContext, useEffect } from "react";
 
-export class TotalItems extends Component {
+import baseURL from "../../configBaseURL";
+import { ShopContext } from "../../shopContext";
 
-  constructor(props) {
-    super(props)
+export function TotalItems() {
+  const { shopID } = useContext(ShopContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [itemsCount, setItemsCount] = useState();
 
-    this.state = {
-      items: 0
-    }
-  }
-
-  componentDidMount() {
-    const path = '/shops/1/items'
-    const fetchURL = baseURL + path
+  useEffect(() => {
+    const path = `/shops/${shopID}/items`;
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        this.setState({
-          items: apiData.results
-        })
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        setItemsCount(apiData);
+        setIsLoading(false);
+        console.log({ apiData });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
-  }
+  }, [shopID]);
 
-  render() {
-    //console.log(`items ----> ${JSON.stringify(Array.isArray(this.state.items))}`)
-    const { items } = this.state
-    
-    return (
-      <>
+  return (
+    <>
+      {isLoading && "Loading..."}
+      {itemsCount && (
         <span className="figure figure-four">
           <div className="total-females">
             <i className="fas fa-user"></i>
-                Total Produits
-              </div>
-          <h2>{items ? items : 0}</h2>
+            Total Produits
+          </div>
+          <h2>{itemsCount.length}</h2>
         </span>
-      </>
-    )
-  }
+      )}
+    </>
+  );
 }
 
-export default TotalItems
+export default TotalItems;

@@ -17,7 +17,6 @@ export function MainChart() {
       .then((apiData) => {
         setItemsArr(apiData);
         setIsLoading(false);
-        console.log({ apiData });
       })
       .catch((e) => {
         console.log(e);
