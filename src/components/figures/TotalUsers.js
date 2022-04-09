@@ -1,48 +1,51 @@
-import React, { Component } from 'react'
-import baseURL from '../../configBaseURL'
+import React, { Component } from "react";
+import baseURL from "../../configBaseURL";
 
 export class TotalUsers extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      userCount: ''
-    }
+      userCount: undefined,
+      loading: true,
+    };
   }
 
   componentDidMount() {
-    const path = '/clients/total_clients'
-    const fetchURL = baseURL + path
+    const path = "/clients/total_clients";
+    const fetchURL = baseURL + path;
     fetch(fetchURL)
-      .then(Response => Response.json())
-      .then(apiData => {
-        this.setState({
-          userCount: apiData.results
-        })
+      .then((Response) => Response.json())
+      .then((apiData) => {
+        this.setState({ loading: false, userCount: apiData.results });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
         return e;
       });
   }
 
   render() {
+    const { isLoading, userCount } = this.state;
     return (
       <>
-        <span className="figure figure-one">
-          <div className="total-users">
-            <i className="fas fa-user"></i>
-                Total Clients
-              </div>
-          <h2>{this.state.userCount}</h2>
-          <div className="percent">
-            <i className="fas"></i>
-                avec un compte
-          </div>
-        </span>
+        {isLoading && "Loading..."}
+        {userCount && (
+          <span className="figure figure-one">
+            <div className="total-users">
+              <i className="fas fa-user"></i>
+              Total Clients
+            </div>
+            <h2>{userCount}</h2>
+            <div className="percent">
+              <i className="fas"></i>
+              avec un compte
+            </div>
+          </span>
+        )}
       </>
-    )
+    );
   }
 }
 
-export default TotalUsers
+export default TotalUsers;
