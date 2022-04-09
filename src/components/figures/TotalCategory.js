@@ -18,7 +18,7 @@ export function TotalCategory() {
         console.log(e);
         return e;
       });
-  });
+  }, []);
 
   function displayCatgories() {
     let allCategories = "";
